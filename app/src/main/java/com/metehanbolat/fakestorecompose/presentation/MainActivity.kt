@@ -51,11 +51,11 @@ fun MainScreen(
     ) {
         Text(
             text = "Text",
-            modifier = Modifier.clickable { viewModel.getAllProducts() }
+            modifier = Modifier.clickable {
+                viewModel.getAllProducts()
+            }
         )
     }
-
-    println(uiState)
 
     if (uiState.isLoading) {
         println("Loading")
