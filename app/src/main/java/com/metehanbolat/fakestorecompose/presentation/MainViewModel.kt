@@ -3,7 +3,12 @@ package com.metehanbolat.fakestorecompose.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.metehanbolat.domain.common.NetworkResponse
-import com.metehanbolat.domain.use_case.get_all_products.GetAllProductsUseCase
+import com.metehanbolat.domain.mapper.ProductListMapper
+import com.metehanbolat.domain.model.ProductItem
+import com.metehanbolat.domain.usecase.get_all_products.GetAllProductsUseCase
+import com.metehanbolat.domain.usecase.getlimitedproductsusecase.GetLimitedProductsUseCase
+import com.metehanbolat.fakestorecompose.R
+import com.metehanbolat.fakestorecompose.model.ProductUIData
 import com.metehanbolat.fakestorecompose.model.ProductState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -12,27 +17,59 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val getAllProductsUseCase: GetAllProductsUseCase
-): ViewModel() {
+    private val getAllProductsUseCase: GetAllProductsUseCase,
+    private val getLimitedProductsUseCase: GetLimitedProductsUseCase,
+    private val productsMapper: ProductListMapper<ProductItem, ProductUIData>
+) : ViewModel() {
 
-    private val _state = MutableStateFlow(ProductState())
+    private val _state = MutableStateFlow<ProductState>(ProductState.Loading)
     val state: StateFlow<ProductState> = _state.asStateFlow()
+
+    init {
+        getAllProducts()
+    }
 
     fun getAllProducts() {
         viewModelScope.launch {
-            getAllProductsUseCase().collect { result ->
-                when(result) {
-                    is NetworkResponse.Loading -> {
-                        _state.value = ProductState(isLoading = true)
-                    }
-                    is NetworkResponse.Success -> {
-                        _state.value = ProductState(products = result.data ?: emptyList())
-                    }
-                    is NetworkResponse.Error -> {
-                        _state.value = ProductState(error = result.message ?: "An unexpected error occurred!")
+            getAllProductsUseCase()
+                .onStart { println("getAllProducts: onStart") }
+                .onCompletion { println("getAllProducts: onCompletion") }
+                .collect { result ->
+                    when (result) {
+                        is NetworkResponse.Loading -> {
+                            _state.value = ProductState.Loading
+                        }
+                        is NetworkResponse.Success -> {
+                            _state.value =
+                                ProductState.Success(data = productsMapper.map(result.result))
+                        }
+                        is NetworkResponse.Error -> {
+                            _state.value = ProductState.Error(message = R.string.error)
+                        }
                     }
                 }
-            }
+        }
+    }
+
+    fun getLimitedProducts(limit: String) {
+        viewModelScope.launch {
+            getAllProductsUseCase()
+                .onStart { println("getLimitedProducts: onStart") }
+                .onCompletion { println("getLimitedProducts: onCompletion") }
+                .collect { result ->
+                    when (result) {
+                        is NetworkResponse.Loading -> {
+                            _state.value = ProductState.Loading
+                        }
+                        is NetworkResponse.Success -> {
+                            _state.value =
+                                ProductState.Success(data = productsMapper.map(result.result))
+                        }
+                        is NetworkResponse.Error -> {
+                            _state.value = ProductState.Error(message = R.string.error)
+                        }
+                    }
+                }
         }
     }
 }

@@ -1,10 +1,14 @@
 package com.metehanbolat.data.api
 
-import com.metehanbolat.data.model.ProductsItemModel
+import com.metehanbolat.data.model.ProductResponseItem
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface FakeStoreApi {
 
     @GET("products")
-    suspend fun getAllProducts(): List<ProductsItemModel>
+    suspend fun getAllProducts(): List<ProductResponseItem>
+
+    @GET("products")
+    suspend fun getLimitedProducts(@Query("limit") limit: String): List<ProductResponseItem>
 }

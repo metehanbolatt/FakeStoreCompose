@@ -1,9 +1,9 @@
 package com.metehanbolat.fakestorecompose.model
 
-import com.metehanbolat.domain.model.ProductItem
+import androidx.annotation.StringRes
 
-data class ProductState(
-    val isLoading: Boolean = false,
-    val products: List<ProductItem> = emptyList(),
-    val error: String = ""
-)
+sealed class ProductState {
+    object Loading : ProductState()
+    data class Success(val data: List<ProductUIData>) : ProductState()
+    data class Error(@StringRes val message: Int) : ProductState()
+}

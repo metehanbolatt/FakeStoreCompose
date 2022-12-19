@@ -3,7 +3,7 @@ package com.metehanbolat.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class ProductsItemModel(
+data class ProductResponseItem(
     @SerializedName("category")
     val category: String?,
     @SerializedName("description")
