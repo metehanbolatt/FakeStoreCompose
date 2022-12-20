@@ -25,10 +25,6 @@ class MainViewModel @Inject constructor(
     private val _state = MutableStateFlow<ProductState>(ProductState.Loading)
     val state: StateFlow<ProductState> = _state.asStateFlow()
 
-    init {
-        getAllProducts()
-    }
-
     fun getAllProducts() {
         viewModelScope.launch {
             getAllProductsUseCase()
@@ -53,7 +49,7 @@ class MainViewModel @Inject constructor(
 
     fun getLimitedProducts(limit: String) {
         viewModelScope.launch {
-            getAllProductsUseCase()
+            getLimitedProductsUseCase(limit = limit)
                 .onStart { println("getLimitedProducts: onStart") }
                 .onCompletion { println("getLimitedProducts: onCompletion") }
                 .collect { result ->

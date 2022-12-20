@@ -26,6 +26,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             FakeStoreComposeTheme {
+
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
@@ -52,16 +53,22 @@ fun MainScreen(
         is ProductState.Success -> {
             ProductListScreen(
                 productList = response.data,
-                searchText = searchText
-            ) {
-                searchText = it
-            }
+                searchText = searchText,
+                onValueChange = { searchText = it }
+            )
         }
         is ProductState.Error -> {
             ErrorScreen()
         }
     }
 
+    LaunchedEffect(key1 = searchText) {
+        if (searchText.isBlank()) {
+            viewModel.getAllProducts()
+        } else {
+            viewModel.getLimitedProducts(searchText)
+        }
+    }
 }
 
 @Composable
