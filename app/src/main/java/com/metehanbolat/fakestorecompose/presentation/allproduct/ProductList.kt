@@ -1,8 +1,6 @@
 package com.metehanbolat.fakestorecompose.presentation.allproduct
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -13,26 +11,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.metehanbolat.fakestorecompose.model.ProductUIData
 
 @ExperimentalGlideComposeApi
 @Composable
 fun ProductListScreen(
-    productList: List<ProductUIData>,
     searchText: String,
     onValueChange: (String) -> Unit,
+    isTextFieldEnabled: Boolean,
+    productListScreen: @Composable () -> Unit
 ) {
-
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 10.dp)
+            .padding(top = 10.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         OutlinedTextField(
             modifier = Modifier
-                .padding(horizontal = 10.dp)
-                .padding(top = 10.dp),
+                .fillMaxWidth(),
             value = searchText,
+            enabled = isTextFieldEnabled,
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Search,
@@ -49,12 +49,11 @@ fun ProductListScreen(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
-            items(productList) {
-                ProductCard(product = it)
-            }
+            productListScreen()
         }
     }
 }

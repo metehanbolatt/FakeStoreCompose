@@ -27,7 +27,7 @@ fun ProductCard(
         elevation = 10.dp
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().padding(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -44,14 +44,13 @@ fun ProductCard(
     }
 }
 
-
 @ExperimentalGlideComposeApi
 @Preview(showBackground = true)
 @Composable
 fun ProductCardPreview() {
     ProductCard(
         product = ProductUIData(
-            name = "Fjallraven",
+            name = "Bag",
             imageUrl = "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg"
         )
     )
