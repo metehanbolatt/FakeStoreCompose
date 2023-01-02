@@ -1,7 +1,9 @@
 package com.metehanbolat.fakestorecompose.presentation.allproduct
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -14,10 +16,12 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.metehanbolat.fakestorecompose.R
 import com.metehanbolat.fakestorecompose.model.ProductUIData
 
+@ExperimentalMaterialApi
 @ExperimentalGlideComposeApi
 @Composable
 fun ProductCard(
-    product: ProductUIData
+    product: ProductUIData,
+    cardClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -27,7 +31,7 @@ fun ProductCard(
         elevation = 10.dp
     ) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(10.dp),
+            modifier = Modifier.fillMaxSize().padding(10.dp).clickable { cardClick() },
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -44,6 +48,7 @@ fun ProductCard(
     }
 }
 
+@ExperimentalMaterialApi
 @ExperimentalGlideComposeApi
 @Preview(showBackground = true)
 @Composable
@@ -53,5 +58,5 @@ fun ProductCardPreview() {
             name = "Bag",
             imageUrl = "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg"
         )
-    )
+    ) {}
 }
