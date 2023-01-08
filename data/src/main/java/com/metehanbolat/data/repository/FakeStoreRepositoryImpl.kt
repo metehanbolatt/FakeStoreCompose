@@ -33,4 +33,13 @@ class FakeStoreRepositoryImpl @Inject constructor(
             }
         }
 
+    override suspend fun getProductFromId(id: String): NetworkResponse<ProductItem> =
+        withContext(ioDispatcher) {
+            try {
+                remoteDataSource.getProductFromId(id = id)
+            } catch (e: Exception) {
+                NetworkResponse.Error(exception = e)
+            }
+        }
+
 }

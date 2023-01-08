@@ -14,7 +14,7 @@ class RemoteDataSourceImpl @Inject constructor(private val fakeStoreApi: FakeSto
             val response = fakeStoreApi.getAllProducts().map { it.toProductItem() }
             NetworkResponse.Success(response)
         } catch (e: Exception) {
-            NetworkResponse.Error(e)
+            NetworkResponse.Error(exception = e)
         }
 
     override suspend fun getLimitedProducts(limit: String): NetworkResponse<List<ProductItem>> =
@@ -22,7 +22,15 @@ class RemoteDataSourceImpl @Inject constructor(private val fakeStoreApi: FakeSto
             val response = fakeStoreApi.getLimitedProducts(limit = limit).map { it.toProductItem() }
             NetworkResponse.Success(response)
         } catch (e: Exception) {
-            NetworkResponse.Error(e)
+            NetworkResponse.Error(exception = e)
+        }
+
+    override suspend fun getProductFromId(id: String): NetworkResponse<ProductItem> =
+        try {
+            val response = fakeStoreApi.getProductFromId(id = id).toProductItem()
+            NetworkResponse.Success(result = response)
+        } catch (e: Exception) {
+            NetworkResponse.Error(exception = e)
         }
 
 }
