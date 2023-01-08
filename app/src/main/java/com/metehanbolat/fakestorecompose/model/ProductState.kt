@@ -2,8 +2,8 @@ package com.metehanbolat.fakestorecompose.model
 
 import androidx.annotation.StringRes
 
-sealed class ProductState {
-    object Loading : ProductState()
-    data class Success(val data: List<ProductUIData>) : ProductState()
-    data class Error(@StringRes val message: Int) : ProductState()
+sealed class ProductState<out T: Any?> {
+    object Loading : ProductState<Nothing>()
+    data class Success<out T: Any>(val data: T) : ProductState<T>()
+    data class Error(@StringRes val message: Int) : ProductState<Nothing>()
 }

@@ -1,11 +1,12 @@
 package com.metehanbolat.fakestorecompose.presentation.allproduct
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -46,15 +47,18 @@ fun MainScreen(
                 }
                 is ProductState.Error -> {
                     WaitingScreen(R.raw.network_error)
+                    isTextFieldEnabled = true
                 }
                 is ProductState.Success -> {
                     isTextFieldEnabled = true
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize()
+                    LazyVerticalGrid(
+                        modifier = Modifier.fillMaxSize(),
+                        columns = GridCells.Adaptive(150.dp)
                     ) {
-                        items(response.data) {
-                            ProductCard(product = it) {
-                                navController.navigate(Screen.ProductDetail.route)
+                        val data = response.data
+                        items(data.size) { index ->
+                            ProductCard(product = data[index]) {
+                                navController.navigate("${Screen.ProductDetail.route}/${data[index].id}")
                             }
                         }
                     }

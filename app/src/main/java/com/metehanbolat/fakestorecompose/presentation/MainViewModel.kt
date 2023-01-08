@@ -8,8 +8,8 @@ import com.metehanbolat.domain.model.ProductItem
 import com.metehanbolat.domain.usecase.get_all_products.GetAllProductsUseCase
 import com.metehanbolat.domain.usecase.getlimitedproductsusecase.GetLimitedProductsUseCase
 import com.metehanbolat.fakestorecompose.R
-import com.metehanbolat.fakestorecompose.model.ProductUIData
 import com.metehanbolat.fakestorecompose.model.ProductState
+import com.metehanbolat.fakestorecompose.model.ProductUIData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -22,8 +22,8 @@ class MainViewModel @Inject constructor(
     private val productsMapper: ProductListMapper<ProductItem, ProductUIData>
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<ProductState>(ProductState.Loading)
-    val state: StateFlow<ProductState> = _state.asStateFlow()
+    private val _state = MutableStateFlow<ProductState<List<ProductUIData>>>(ProductState.Loading)
+    val state: StateFlow<ProductState<List<ProductUIData>>> = _state.asStateFlow()
 
     fun getAllProducts() {
         viewModelScope.launch {

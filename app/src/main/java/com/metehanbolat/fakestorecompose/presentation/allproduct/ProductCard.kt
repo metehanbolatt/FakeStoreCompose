@@ -21,17 +21,17 @@ import com.metehanbolat.fakestorecompose.model.ProductUIData
 @Composable
 fun ProductCard(
     product: ProductUIData,
-    cardClick: () -> Unit
+    cardClick: (() -> Unit)? = null
 ) {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp)
-            .padding(5.dp),
+            .size(200.dp)
+            .padding(5.dp)
+            .clickable { cardClick?.invoke() },
         elevation = 10.dp
     ) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(10.dp).clickable { cardClick() },
+            modifier = Modifier.fillMaxSize().padding(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -55,6 +55,7 @@ fun ProductCard(
 fun ProductCardPreview() {
     ProductCard(
         product = ProductUIData(
+            id = "1",
             name = "Bag",
             imageUrl = "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg"
         )

@@ -9,6 +9,7 @@ class ProductMainUIMapperImpl @Inject constructor() : ProductListMapper<ProductI
     override fun map(input: List<ProductItem>?): List<ProductUIData> {
         return input?.map {
             ProductUIData(
+                id = it.id.toString(),
                 name = it.title ?: "",
                 imageUrl = it.image ?: ""
             )
